@@ -6,7 +6,7 @@ from tkinter import Tk, Grid, Frame, Entry, Button, Label, END, ttk, VERTICAL, C
 from tkinter.colorchooser import *
 from sympy import *
 from sympy.parsing.sympy_parser import parse_expr
-import pylab
+import matplotlib.pylab as pylab
 
 
 class Plotter():
@@ -151,7 +151,6 @@ class Plotter():
 
 if __name__ == "__main__":
     root = Tk()
-    root.wm_state('zoomed')
     plotter = Plotter(root)
     plotter.main()
     root.mainloop()
