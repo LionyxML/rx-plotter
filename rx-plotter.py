@@ -13,7 +13,7 @@ class Plotter():
     def __init__(self, root):
 
         self.root = root
-        self.root.title("r[Plotter]X")
+        self.root.title("rx-plotter  v0.2")
         self.root.wm_minsize(400, 200)
         self.root.grid_anchor(anchor = 'c')
 
@@ -31,7 +31,6 @@ class Plotter():
         for each_label in range(1, self.max_plot):
             self.labels_array[each_label] = Label(frame, text = str("y" + str(each_label) + "(x) = "))
             self.labels_array[each_label].grid(row = self.first_row + 1 + each_label, column = self.first_column, sticky = "e")
-
         for each_entry in range(1, self.max_plot):
             self.entry_array[each_entry] = Entry(frame)
             self.entry_array[each_entry].grid(row = self.first_row + 1 + each_entry, column = self.first_column + 1)
@@ -56,24 +55,37 @@ class Plotter():
         self.label_graph_title = Label(frame, text = "Plot Title: ")
         self.label_first_x = Label(frame, text = "Starts on x = ")
         self.label_last_x = Label(frame, text = "Ends on x = ")
+
+        self.label_upper_y = Label(frame, text = "Show y up to = ")
+        self.label_lower_y = Label(frame, text = "Show y down to = ")
         self.label_step = Label(frame, text = "Step: ")
+
+
+        
 
 
         self.entry_graph_title = Entry(frame)
         self.entry_first_x = Entry(frame)
         self.entry_last_x = Entry(frame)
+        self.entry_upper_y = Entry(frame)
+        self.entry_lower_y = Entry(frame)
         self.entry_step = Entry(frame)
 
 
         self.label_graph_title.grid(row = self.first_row + 2, column = self.first_column + 6, sticky = "e")
         self.label_first_x.grid(row = self.first_row + 3, column = self.first_column + 6, sticky = "e")
         self.label_last_x.grid(row = self.first_row + 4, column = self.first_column + 6, sticky = "e")
-        self.label_step.grid(row = self.first_row + 5, column = self.first_column + 6, sticky = "e")
+        self.label_upper_y.grid(row = self.first_row + 5, column = self.first_column + 6, sticky = "e")
+        self.label_lower_y.grid(row = self.first_row + 6, column = self.first_column + 6, sticky = "e")
+        self.label_step.grid(row = self.first_row + 7, column = self.first_column + 6, sticky = "e")
 
+        
         self.entry_graph_title.grid(row = self.first_row + 2, column = self.first_column + 7)
         self.entry_first_x.grid(row = self.first_row + 3, column = self.first_column + 7)
         self.entry_last_x.grid(row = self.first_row + 4, column = self.first_column + 7)
-        self.entry_step.grid(row = self.first_row + 5, column = self.first_column + 7)
+        self.entry_upper_y.grid(row = self.first_row + 5, column = self.first_column + 7)
+        self.entry_lower_y.grid(row = self.first_row + 6, column = self.first_column + 7)
+        self.entry_step.grid(row = self.first_row + 7, column = self.first_column + 7)
 
 
 
@@ -83,6 +95,9 @@ class Plotter():
         self.entry_first_x.insert(END, "-10")
         self.entry_last_x.insert(END, "10")
         self.entry_step.insert(END, "0.5")
+        self.entry_upper_y.insert(END, "100")
+        self.entry_lower_y.insert(END, "0")
+        
 
 
         frame.grid()
@@ -98,6 +113,8 @@ class Plotter():
 
         self.xmin = float(self.entry_first_x.get())
         self.xmax = float(self.entry_last_x.get())
+        self.ymin = float(self.entry_lower_y.get())
+        self.ymax = float(self.entry_upper_y.get())
         self.step = abs(float(self.entry_step.get()))
         self.checkreadings = [ self.checked[x].get() for x in range(self.max_plot)]
 
@@ -106,6 +123,8 @@ class Plotter():
             self.error("Last x should be greater then the first x!")
         elif (self.xmax - self.xmin) < self.step:
             self.error("Step should be smaller then range (last x - first x)!")
+        elif self.ymax <= self.ymin:
+            self.error("Upper y limit should be greater then lower y limit")
         elif not any(self.checkreadings):
             self.error("You should check at least one function to plot!")
         else:
@@ -125,13 +144,14 @@ class Plotter():
                         self.xzing = self.xzing + self.step
 
 
-            pylab.figure("r[Plotter]X")
+            pylab.figure("rx-plotter  v0.2")
 
             for i in range(1, self.max_plot):
                 if self.checkreadings[i] == 1:
                     pylab.plot(self.xx[i], self.yy[i], label = str(self.entry_array[i].get()), color = self.color_array[i]['fg'])
 
-
+            
+            pylab.ylim(self.ymin, self.ymax)
             pylab.xlabel("x")
             pylab.ylabel("f(x)")
 
