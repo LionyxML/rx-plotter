@@ -1,4 +1,4 @@
-# [rX] Plotter
+# rx-plotter
 
 It's a python software you can use to plot mathematical functions into graphics. Works as a king of GUI to sympy.
 
